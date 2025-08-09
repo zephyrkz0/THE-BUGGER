@@ -278,14 +278,38 @@
             color: var(--text-color-glitched);
             text-shadow: 0 0 5px var(--text-color-glitched);
         }
+.site-footer {
+    text-align: right;
+    margin-top: 50px;
+    padding: 20px 0;
+    border-top: 1px solid #e0e0e0;
+    color: #777;
+}
+.site-footer p:last-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.site-footer p:last-child img {
+    display: block; 
+}
 
+
+@media (max-width: 600px) {
+    .site-footer {
+        text-align: center; 
+    }
+    .site-footer p:last-child {
+        justify-content: center;
+    }
+}
     </style>
 </head>
 <body class="theme-pro">
 
     <header id="mainHeader">
-        <h1>Code Optimizer Pro</h1>
-        <p>Your code is good. Our AI will make it better. Paste your script into the editor below to analyze and refactor it for peak performance and efficiency.</p>
+        <h1>THE BUGGER</h1>
+        <p>TIRED OF BUGS??LOW PERFORMACE CODE?? OR YOU JUST WANT TO MAKE IT BETTER.WE'VE GOT YOU COVERED , Paste your script into the editor below to analyze and refactor it for peak performance and efficiency.</p>
     </header>
 
     <main>
@@ -444,7 +468,7 @@ function calculateFibonacci(n) {
                 bodyEl.classList.add('theme-glitched');
 
                 mainHeader.innerHTML = `
-                    <h1>Oopsies! <img src="cat.jpg" alt="A glitched image" style="height: 2em;"></h1>
+                    <h1>Oops! <img src="cat.jpg" alt="A glitched image" style="height: 2em;"></h1>
                     <p>In the process of making the code better, we seem to have added in some fun stuff. Now, good luck finding those <strong>${totalBugs} bugs</strong> we added. Enjoyyyy!</p>
                 `;
                 
@@ -512,6 +536,10 @@ function calculateFibonacci(n) {
         Prism.highlightElement(codeInputElement);
 
     </script>
+    <footer class="site-footer">
+  <p>Made with ❤️ for Useless Projects by Kasi.</p>
+  <p><a href="https://github.com/zephyrkz0" ><img src="git.png" style="align-items: center; height: 1em;"></a></p>
+</footer>
 
 </body>
 </html>
