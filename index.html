@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Optimizer Pro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;600;700&family=DotGothic16&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Glassmorphism Professional Theme (Initial) */
+            --bg-pro-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --container-bg-pro: rgba(255, 255, 255, 0.1);
+            --text-color-pro: #FFFFFF;
+            --subtext-color-pro: #E0E0E0;
+            --header-color-pro: #FFFFFF;
+            --button-bg-pro: rgba(255, 255, 255, 0.15);
+            --button-hover-pro: rgba(255, 255, 255, 0.25);
+            --border-pro: rgba(255, 255, 255, 0.18);
+
+            /* Red Dot-Matrix Glitched Theme (After Click) */
+            --bg-glitched: #1a0000;
+            --container-bg-glitched: #2a0808;
+            --text-color-glitched: #ff4136;
+            --subtext-color-glitched: #ff4136;
+            --header-color-glitched: #ff4136;
+            --button-bg-glitched: #ff4136;
+            --button-text-glitched: #1a0000;
+            --border-glitched: #ff4136;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            transition: background 0.5s ease, color 0.5s ease, font-family 0.5s ease;
+        }
+
+        body.theme-pro {
+            background: var(--bg-pro-gradient);
+            color: var(--subtext-color-pro);
+        }
+        body.theme-glitched {
+            background: var(--bg-glitched);
+            color: var(--subtext-color-glitched);
+            font-family: 'DotGothic16', sans-serif;
+            text-shadow: 0 0 5px var(--text-color-glitched), 0 0 10px rgba(255, 65, 54, 0.5);
+        }
+        
+        body.theme-glitched::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.5),
+                rgba(0, 0, 0, 0.5) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            transition: color 0.5s ease, font-family 0.5s ease, font-size 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            letter-spacing: -0.025em;
+        }
+        
+        body.theme-pro h1 { color: var(--header-color-pro); }
+        body.theme-glitched h1 { font-family: 'DotGothic16', sans-serif; font-size: 3rem; color: var(--header-color-glitched); }
+
+        p {
+            font-size: 1.1rem;
+            max-width: 550px;
+            transition: color 0.5s ease;
+            line-height: 1.6;
+        }
+        body.theme-pro p { color: var(--subtext-color-pro); }
+        body.theme-glitched p { color: var(--subtext-color-glitched); }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            width: 95%;
+            max-width: 800px;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .code-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            border-radius: 16px;
+            transition: all 0.5s ease;
+            border-width: 1px;
+            border-style: solid;
+            overflow: hidden;
+        }
+        
+        body.theme-pro .code-container {
+            background-color: var(--container-bg-pro);
+            border-color: var(--border-pro);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        body.theme-glitched .code-container {
+            padding: 1.5rem;
+            background-color: var(--container-bg-glitched);
+            border-color: var(--border-glitched);
+            box-shadow: 0 0 20px var(--border-glitched);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-radius: 8px;
+        }
+
+        h2 {
+            margin: 0;
+            font-weight: 600;
+            transition: all 0.5s ease;
+        }
+        body.theme-pro h2 {
+            color: var(--text-color-pro);
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 1.25rem 1.75rem 0.75rem;
+        }
+        body.theme-glitched h2 {
+            padding: 0 0 1rem 0;
+            color: var(--text-color-glitched);
+        }
+
+
+        pre[class*="language-"] {
+            margin: 0 !important;
+            padding: 1.75rem !important;
+            height: 50vh;
+            max-height: 600px;
+            border-radius: 0 !important;
+            font-family: 'Fira Code', monospace !important;
+            font-size: 0.95rem !important;
+            overflow: auto;
+            border: none !important;
+            border-top: 1px solid var(--border-pro) !important;
+        }
+        
+        body.theme-pro pre[class*="language-"] {
+           background-color: transparent !important;
+        }
+        
+        body.theme-glitched pre[class*="language-"] {
+            border-radius: 4px !important;
+            border: 1px dashed var(--border-glitched) !important;
+            background-color: #000 !important;
+            text-shadow: none !important;
+        }
+        
+        #codeInput { outline: none; }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin: 0.5rem 0;
+            min-height: 60px;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        body.theme-pro button {
+            color: #ffffff;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            border-radius: 8px;
+            background-color: var(--button-bg-pro);
+            border: 1px solid var(--border-pro);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        body.theme-pro button:hover {
+            background-color: var(--button-hover-pro);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        body.theme-glitched button {
+            color: var(--button-text-glitched);
+            font-family: 'DotGothic16', sans-serif;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.2rem;
+            border-radius: 0;
+            background-color: var(--button-bg-glitched);
+            box-shadow: 0 0 15px var(--button-bg-glitched);
+            text-shadow: none;
+        }
+        body.theme-glitched button:hover {
+            filter: brightness(1.2);
+        }
+
+        button:disabled {
+            background: #4B5563 !important;
+            color: #aaa !important;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+            filter: none !important;
+            text-shadow: none !important;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+        .shake {
+            animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        
+        footer {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        #runawayBtn {
+            position: absolute;
+            background-color: red;
+            color: white;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: top 0.3s ease-out, left 0.3s ease-out;
+            z-index: 1000;
+        }
+
+        .taunt-message {
+            position: absolute;
+            font-size: 1.5rem;
+            pointer-events: none;
+            z-index: 1001;
+            opacity: 1;
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            color: var(--text-color-glitched);
+            text-shadow: 0 0 5px var(--text-color-glitched);
+        }
+
+    </style>
+</head>
+<body class="theme-pro">
+
+    <header id="mainHeader">
+        <h1>Code Optimizer Pro</h1>
+        <p>Your code is good. Our AI will make it better. Paste your script into the editor below to analyze and refactor it for peak performance and efficiency.</p>
+    </header>
+
+    <main>
+        <div class="code-container">
+            <h2 id="inputTitle">Paste Your Code Here</h2>
+            <pre id="codeInputContainer" class="language-js"><code id="codeInput" contenteditable="true" spellcheck="false">
+function calculateFibonacci(n) {
+  if (n <= 1) {
+    return n;
+  }
+  let a = 0, b = 1;
+  for (let i = 0; i < n - 1; i++) {
+    let temp = b;
+    b = a + b;
+    a = temp;
+  }
+  return b;
+}
+            </code></pre>
+        </div>
+        <div class="controls" id="controlsContainer">
+            <button id="bugifyBtn">Make My Code Better! ✨</button>
+        </div>
+    </main>
+
+    <footer id="mainFooter">
+        <p>Powered by cutting-edge, totally-not-evil AI.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script>
+        function swapSemicolons(code) {
+            let bugCount = 0;
+            const newCode = code.replace(/;/g, (match) => {
+                if (Math.random() < 0.5) {
+                    bugCount++;
+                    return ';';
+                }
+                return match;
+            });
+            return { newCode, bugCount };
+        }
+
+        function addInvisibleCharacters(code) {
+            let bugCount = 0;
+            const newCode = code.replace(/\b(\w{3,})\b/g, (match) => {
+                if (Math.random() < 0.15) {
+                    bugCount++;
+                    const index = Math.floor(Math.random() * (match.length - 1)) + 1;
+                    return `${match.slice(0, index)}\u200B${match.slice(index)}`;
+                }
+                return match;
+            });
+            return { newCode, bugCount };
+        }
+
+        function flipOperators(code) {
+            let bugCount = 0;
+            const newCode = code.replace(/[<>]=?/g, (match) => {
+                if (Math.random() < 0.3) {
+                    bugCount++;
+                    const map = {'<': '>', '>': '<', '<=': '>=', '>=': '<='};
+                    return map[match];
+                }
+                return match;
+            });
+            return { newCode, bugCount };
+        }
+
+        function subtleTypo(code) {
+            let bugCount = 0;
+            const commonVars = {'user': 'usr', 'index': 'indx', 'error': 'erorr', 'data': 'dara', 'response': 'respone', 'request': 'requset', 'length': 'lenght', 'temp': 'temq'};
+            for (const [original, typo] of Object.entries(commonVars)) {
+                code = code.replace(new RegExp(`\\b${original}\\b`, 'g'), (match) => {
+                    if (Math.random() < 0.4) {
+                        bugCount++;
+                        return typo;
+                    }
+                    return match;
+                });
+            }
+            return { newCode: code, bugCount };
+        }
+
+        function createAccidentalGlobals(code) {
+            let bugCount = 0;
+            const newCode = code.replace(/\b(let|const|var)\s/g, (match) => {
+                if (Math.random() < 0.15) {
+                    bugCount++;
+                    return '';
+                }
+                return match;
+            });
+            return { newCode, bugCount };
+        }
+
+        function messUpEquality(code) {
+            let bugCount = 0;
+            const newCode = code.replace(/===|==/g, (match) => {
+                if (Math.random() < 0.4) {
+                    bugCount++;
+                    return match === '===' ? '==' : '=';
+                }
+                return match;
+            });
+            return { newCode, bugCount };
+        }
+
+        function createOffByOneErrors(code) {
+            let bugCount = 0;
+            const newCode = code.replace(/for\s*\([^)]+i\s*<=\s*[^)]+\)/g, (loop) => {
+                if (Math.random() < 0.5) {
+                    bugCount++;
+                    return loop.replace('<=', '<');
+                }
+                return loop;
+            });
+            return { newCode, bugCount };
+        }
+
+        const bodyEl = document.querySelector('body');
+        const mainHeader = document.getElementById('mainHeader');
+        const inputTitle = document.getElementById('inputTitle');
+        const codeInputElement = document.getElementById('codeInput');
+        const controlsContainer = document.getElementById('controlsContainer');
+        const mainFooter = document.getElementById('mainFooter');
+        
+        const bugFunctions = [
+            swapSemicolons, addInvisibleCharacters, flipOperators,
+            subtleTypo, createAccidentalGlobals, messUpEquality, createOffByOneErrors
+        ];
+
+        controlsContainer.addEventListener('click', (event) => {
+            if (event.target.id === 'bugifyBtn') {
+                const bugifyButton = event.target;
+                let originalCode = codeInputElement.textContent;
+                if (!originalCode.trim()) {
+                    bugifyButton.classList.add('shake');
+                    setTimeout(() => {
+                        bugifyButton.classList.remove('shake');
+                    }, 820);
+                    return;
+                }
+
+                let buggyCode = originalCode;
+                let totalBugs = 0;
+                bugFunctions.forEach(bugFunc => {
+                    const result = bugFunc(buggyCode);
+                    buggyCode = result.newCode;
+                    totalBugs += result.bugCount;
+                });
+                
+                bodyEl.classList.remove('theme-pro');
+                bodyEl.classList.add('theme-glitched');
+
+                mainHeader.innerHTML = `
+                    <h1>Oopsies! <img src="cat.jpg" alt="A glitched image" style="height: 2em;"></h1>
+                    <p>In the process of making the code better, we seem to have added in some fun stuff. Now, good luck finding those <strong>${totalBugs} bugs</strong> we added. Enjoyyyy!</p>
+                `;
+                
+                inputTitle.textContent = "Your 'Upgraded' Code";
+                
+                controlsContainer.innerHTML = `
+                    <button id="returnBtn">Return to Previous Code</button>
+                `;
+
+                mainFooter.innerHTML = `<p>Disclaimer: We aren't responsible for any hair-pulling or keyboard smashing that may happen.</p>`;
+
+                codeInputElement.textContent = buggyCode;
+                
+                Prism.highlightElement(codeInputElement);
+            }
+
+            if (event.target.id === 'returnBtn') {
+                const returnBtn = event.target;
+                returnBtn.style.display = 'none';
+
+                const runawayBtn = document.createElement('button');
+                runawayBtn.id = 'runawayBtn';
+                runawayBtn.textContent = 'Click Me to Go Back!';
+                document.body.appendChild(runawayBtn);
+
+                runawayBtn.style.top = '50%';
+                runawayBtn.style.left = '50%';
+                
+                let chaseCount = 0;
+                const taunts = ["C'mon, be fast!", "Don't be lazy!", "Move them hands a lil faster!", "A snail is faster than you!", "My grandma can click faster!"];
+
+                runawayBtn.addEventListener('mouseover', (e) => {
+                    chaseCount++;
+                    
+                    if (chaseCount < 5) {
+                        const newTop = Math.random() * (window.innerHeight - runawayBtn.offsetHeight);
+                        const newLeft = Math.random() * (window.innerWidth - runawayBtn.offsetWidth);
+                        runawayBtn.style.top = `${newTop}px`;
+                        runawayBtn.style.left = `${newLeft}px`;
+
+                        const taunt = document.createElement('p');
+                        taunt.classList.add('taunt-message');
+                        taunt.textContent = taunts[Math.floor(Math.random() * taunts.length)];
+                        taunt.style.left = `${e.pageX}px`;
+                        taunt.style.top = `${e.pageY}px`;
+                        document.body.appendChild(taunt);
+
+                        setTimeout(() => {
+                            taunt.style.opacity = '0';
+                            taunt.style.transform = 'translateY(-50px)';
+                        }, 1500);
+
+                        setTimeout(() => {
+                            taunt.remove();
+                        }, 2500);
+
+                    } else {
+                        runawayBtn.remove();
+                        controlsContainer.innerHTML = `<p>Nice try, by this time you could have solved the actual bugs cmon dont be lazy now</p>`;
+                    }
+                });
+            }
+        });
+        
+        Prism.highlightElement(codeInputElement);
+
+    </script>
+
+</body>
+</html>
